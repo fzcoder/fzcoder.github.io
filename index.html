@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Frank's Blog - Frank的个人博客</title><meta name="author" content="Frank Fang"><meta name="copyright" content="Frank Fang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="Frank&#39;s Blog">
+<meta property="og:url" content="https://www.frankfang.cn/">
+<meta property="og:site_name" content="Frank&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://pic.frankfang.cn/tmp/blog-avatar.png">
+<meta property="article:author" content="Frank Fang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pic.frankfang.cn/tmp/blog-avatar.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.frankfang.cn/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-12-11 17:41:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Frank's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="http://pic.frankfang.cn/tmp/blog-avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(http://pic.frankfang.cn/tmp/blog-carousel-1.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Frank's Blog</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">Frank's Blog</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/fzcoder" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:frankfang001@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/article/202012372" title="Spring Boot整合JWT实现单点登录及身份认证">     <img class="post_bg" src="http://pic.frankfang.cn/img/c3f41391-1fae-4b9a-932a-382418e2264a.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Boot整合JWT实现单点登录及身份认证"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202012372" title="Spring Boot整合JWT实现单点登录及身份认证">Spring Boot整合JWT实现单点登录及身份认证</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-11T08:57:35.000Z" title="发表于 2020-12-11 16:57:35">2020-12-11</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-Boot/">Spring Boot</a></span></div><div class="content">在之前的一篇文章中我们已经详细介绍了什么是JWT以及JWT的组成和工作流程。本文将介绍JWT在Spring Boot项目中该如何应用。
+一、导入JAR首先我们使用Maven进行导入，我导入的版本是0.9.0，若需导入其它版本的，请访问mvnrepository获取更多版本的信息
+123456&lt;!-- JSON Web Token Support For The JVM --&gt;&lt;dependency&gt;    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;    &lt;artifactId&gt;jjwt&lt;/artifactId&gt;    &lt;version&gt;0.9.0&lt;/version&gt;&lt;/dependency&gt;
+
+二、编写工具类该工具类将JWT的常用功能进行封装，方便开发人员使用
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/article/202012847" title="JWT简介与基本原理">     <img class="post_bg" src="http://pic.frankfang.cn/img/9fae5d01-bbee-4188-8270-0dfa322dd2a7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JWT简介与基本原理"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202012847" title="JWT简介与基本原理">JWT简介与基本原理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-11T08:48:01.000Z" title="发表于 2020-12-11 16:48:01">2020-12-11</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF/">会话技术</a></span></div><div class="content">JSON Web Tokens（JWT）, 是为了在网络应用环境间传递声明而执行的一种基于JSON 的开放标准（RFC 7519)。该 Token 被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT 的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该 Token 也可直接被用于认证，也可被加密。
+一、为什么要使用JWT1、传统的鉴权机制HTTP 协议是一种无状态的协议，这就意味着如果用户向服务端提供了用户名和密码来进行用户认证，那么下一次请求时，用户还要再一次进行用户认证才行，因为根据 HTTP 协议，我们无法知道是哪个用户发出的请求，所以为了让服务端能识别是哪个用户发出的请求，只能在服务器存储一份用户登录的信息，这份登录信息会在响应时传递给浏览器，并将其保存在 cookie 中，以便下次请求时发送给服务端，这样服务端就能识别请求来自哪个用户，这就是基于 session 的认证。
+但是这种基于 session 的认证使应用本身很难得到扩展，随着不同客户端用户的增加， ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/article/202012492" title="HTTP 报文">     <img class="post_bg" src="http://pic.frankfang.cn/img/be8ce826-e432-44ae-a9e6-b7dd32e56a0f.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP 报文"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202012492" title="HTTP 报文">HTTP 报文</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-10T14:24:04.000Z" title="发表于 2020-12-10 22:24:04">2020-12-10</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/HTTP/">HTTP</a></span></div><div class="content">有两种 HTTP 报文的类型，请求(request)与响应(response)，每种都有其特定的格式，下面将分别介绍这两种类型的报文。
+一、HTTP 请求HTTP 请求报文由请求行(Request Line)**、请求头(Request Header)、请求体(Request Body)**这三部分组成，下图是HTTP请求报文的格式：
+
+备注
+
+请求行和请求头都是以回车符&lt;CR&gt; + 换行符&lt;LF&gt;作为结束标志，同时在请求头的后面紧跟的是请求空行，这一行仅发送回车符&lt;CR&gt; + 换行符&lt;LF&gt;，用来表示请求头已发送完成，这样做是因为请求头的个数是不确定的，如果没有加入请求空行，WEB服务器就无法知道请求头到底什么时候结束。
+并不是所有的请求都有请求体，如GET、DELETE请求是没有请求体的，而POST、PUT请求是有请求体的。
+
+1、请求方法下面将列出所有请求方法的名称及描述：
+
+
+
+序号
+方法名称
+描述
+
+
+
+1
+GET
+GET方法请求一个指定资源的表示形式，使用GET的请求应该只被用于获取数据
+
+
+2
+HEAD
+HEAD方法请求一个 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/article/202012717" title="HTTP 概述">     <img class="post_bg" src="http://pic.frankfang.cn/img/52f89d68-4080-4021-b58e-109269ede343.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP 概述"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202012717" title="HTTP 概述">HTTP 概述</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-10T14:15:54.000Z" title="发表于 2020-12-10 22:15:54">2020-12-10</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/HTTP/">HTTP</a></span></div><div class="content">HTTP 协议是 Hyper Text Transfer Protocol（超文本传输协议）的缩写，是用于从万维网（World Wide Web ）服务器传输超文本到本地浏览器的传送协议。
+HTTP 是一个基于 TCP/IP 通信协议来传递数据（HTML 文件, 图片文件, 查询结果等）。
+一个完整的 Web 文档通常是由不同的子文档拼接而成的，像是文本、布局描述、图片、视频、脚本等等。
+
+一、HTTP 的基本性质1、HTTP是简单的虽然下一代HTTP/2协议将HTTP消息封装到了帧（frames）中，HTTP大体上还是被设计得简单易读。HTTP报文能够被人读懂，还允许简单测试，降低了门槛，对新人很友好。
+2、HTTP是可扩展的在 HTTP/1.0 中出现的 HTTP headers 让协议扩展变得非常容易。只要服务端和客户端就新 headers 达成语义一致，新功能就可以被轻松加入进来。
+3、HTTP是无状态的HTTP是无状态的。在同一个连接中，两个执行成功的请求之间是没有关系的。这就带来了一个问题，用户没有办法在同一个网站中进行连续的交互，比如在一个电商网站里，用户把某个商品加入到 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/article/202010564" title="Java的数据类型">     <img class="post_bg" src="http://pic.frankfang.cn/img/dcb1dcfc-f1df-4a16-851d-63e517e41baf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java的数据类型"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202010564" title="Java的数据类型">Java的数据类型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-10-19T13:31:59.000Z" title="发表于 2020-10-19 21:31:59">2020-10-19</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">Java 中有两大数据类型，一是基本类型，二是引用类型。基本类型包括数值型，布尔型，字符型。下图展示了基本数据类型所包含的内容：
+一、基本类型1. 整数类型
+
+
+类型
+位宽
+取值范围
+默认值
+
+
+
+byte
+8
+-2^7 ~ 2^7 - 1
+0
+
+
+short
+16
+-2^15 ~ 2^15 - 1
+0
+
+
+int
+32
+-2^31 ~ 2^31 - 1
+0
+
+
+long
+64
+-2^63 ~ 2^63 - 1
+0L
+
+
+【注】整数类型的数在计算机中均以二进制补码的形式保存。
+2. 浮点数类型
+
+
+类型
+位数（符合 IEEE 754标准）
+默认值
+
+
+
+float
+32
+0.0f
+
+
+double
+64
+0.0d
+
+
+【注】浮点数不能用来表示精确的值，如货币等。
+3. 字符类型char 类型是一个单一的 16 位 Unicode 字符，因此 char 类型可以储存任何字符。取值范围： \u0000  ~ \uffff （0 ~ 65,535）
+4. 布尔类型boolean 数据类型表示一位的信息，只有两个取值： true 和 false ，默认值是 false 。
+二、引用类型在 Ja ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/article/202010833" title="Git 简介与安装配置">     <img class="post_bg" src="http://pic.frankfang.cn/img/13098174-5125-4c73-b21a-20e0f4ed84e6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 简介与安装配置"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202010833" title="Git 简介与安装配置">Git 简介与安装配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-10-09T14:18:58.000Z" title="发表于 2020-10-09 22:18:58">2020-10-09</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Git/">Git</a></span></div><div class="content">Git 是一个开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。Git 与常用的版本控制工具 CVS, Subversion 等不同，它采用了分布式版本库的方式，不必服务器端软件支持。
+Git 的项目地址：https://github.com/git/git
+一、安装1. 在 Linux 系统上安装 GitGit 的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代码，所以需要先安装这些依赖工具。
+在有 yum 的系统上（比如 Fedora）或者有 apt-get 的系统上（比如 Debian 体系），可以用下面的命令安装：
+各 Linux 系统可以使用其安装包管理工具（apt-get、yum 等）进行安装：
+Debian / Ubuntu
+123$ apt-get install libcurl4-gnutls-dev libexpat1-dev gettext \ libz-dev libssl-dev$ apt-get ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/article/202007149" title="存储系统 - Cache 的基本原理">     <img class="post_bg" src="http://pic.frankfang.cn/img/6b54177b-e155-4985-a295-45f9d2cf5018.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="存储系统 - Cache 的基本原理"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202007149" title="存储系统 - Cache 的基本原理">存储系统 - Cache 的基本原理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-23T10:06:49.000Z" title="发表于 2020-07-23 18:06:49">2020-07-23</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></span></div><div class="content">Cache 存储器，电脑中为高速缓冲存储器，是位于 CPU 与内存间的一种容量较小但速度很快的存储器。CPU 的速度远高于内存，当 CPU 直接从内存中存取数据时要等待一定时间周期，而 Cache 则可以保存 CPU 刚用过或循环使用的一部分数据，如果 CPU 需要再次使用该部分数据时可从 Cache 中直接调用，这样就避免了重复存取数据，减少了 CPU 的等待时间，因而提高了系统的效率。
+
+一、Cache 的数据交换过程Cache 和主存之间以块为单位进行数据交换。
+
+Cache 和 CPU 之间以字为单位进行数据交换。
+
+
+二、Cache 的结构Cache 被分成若干行，每行的大小与主存块相同。Cache 每行包含三部分，是 Cache 要保存的信息。tag 从 CPU 访问主存的地址中剥离得到、Block 是与主存交换的数据块、valid 表示 Cache 中的数据是否有效。
+
+Cache 的基本参数如下：
+
+
+
+参数
+描述
+
+
+
+S
+组数
+
+
+E
+每组行数
+
+
+B
+块大小（单位：字节）
+
+
+M
+主存大小（单位：字节）
+
+
+导出的基本参数如下：
+
+Cache 的整体结构如下：
+
+ ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/article/202007055" title="Spring Boot 实现文件上传">     <img class="post_bg" src="http://pic.frankfang.cn/img/5f076d18-0a5c-46f5-a6ca-087c68c80d70.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Boot 实现文件上传"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202007055" title="Spring Boot 实现文件上传">Spring Boot 实现文件上传</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-03T16:13:55.000Z" title="发表于 2020-07-04 00:13:55">2020-07-04</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-Boot/">Spring Boot</a></span></div><div class="content">在实际项目中，文件上传是很多项目必不可少的一个功能。那么在 Spring Boot 项目中又是如何来实现文件上传功能的呢？一般来说，上传的文件可以保存到项目根目录下的某一文件夹中，但这样做显然是不太合适的。因此我们选择将文件上传到专门的文件服务器中。很多云计算厂商都提供文件存储服务。这里我选择的是阿里云的对象存储(OSS)。
+一、配置OSS1. 导入SDK首先，你需要注册阿里云的账号并开通对象存储服务。在准备工作完成之后，需要导入 JAVA 版本的 SDK，这里使用 maven 进行导入
+123456&lt;!-- 阿里云OSS对象存储 --&gt;&lt;dependency&gt;	&lt;groupId&gt;com.aliyun.oss&lt;/groupId&gt;	&lt;artifactId&gt;aliyun-sdk-oss&lt;/artifactId&gt;	&lt;version&gt;3.8.0&lt;/version&gt;&lt;/dependency&gt;
+
+2. 修改配置文件导入完成后在 application.properties 配置文件中添加以下 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/article/202007510" title="数据校验 - 4.海明校验">     <img class="post_bg" src="http://pic.frankfang.cn/img/cfc2a1e6-07ba-4a7e-b8b3-d9695584340f.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据校验 - 4.海明校验"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202007510" title="数据校验 - 4.海明校验">数据校验 - 4.海明校验</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-03T09:10:51.000Z" title="发表于 2020-07-03 17:10:51">2020-07-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></span></div><div class="content">合理地增大校验位、增大码距，能够提高校验码发现错误的能力。因此如果在奇偶校验的基础上增加校验位的位数，构成多组奇偶校验，就能够发现更多位的错误并可自动纠正错误。这就是海明校验码(Hamming Code)的实质所在。
+一、基本原理海明编码的实现原理是：在数据编码中加入几个校验位，并把数据的每一个二进制位分配在几个奇偶校验组中。当某一位出错后，就会引起有关的几个校验组的值发生变化，这样不但可以发现出错，还能指出是哪一位出错。
+
+如果出错代码的位置能够确定，将出错位的内容取反，就能够自动纠正错误，因此满足式（2-14）的海明校验码能够检测出一位错误并且能自动纠正一位错误。
+二、编码方式
+
+下面将举一个例子：
+
+三、校验方式海明编码的检错需要根据“指错字”的结果进行判断：若“指错字”全为0，则表示信息无误；若“指错字”不全为0，则表示接收到的信息出错，并且“指错字”对应的十进制数就是出错位的位号。
+接着举上面的例子：
+
+注意！指错字能够正确指示出错位所在位置的前提是代码中只能有一个错误。如果代码中存在多个错误，就可能查不出来。所以海明校验码只有在代码中只存在一个错误的前提下，才能实现纠错。
+ ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/article/202007173" title="数据校验 - 3.CRC校验">     <img class="post_bg" src="http://pic.frankfang.cn/img/d1a9151b-3e8b-4cff-8648-b0ddbb937db0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据校验 - 3.CRC校验"></a></div><div class="recent-post-info"><a class="article-title" href="/article/202007173" title="数据校验 - 3.CRC校验">数据校验 - 3.CRC校验</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-03T09:00:53.000Z" title="发表于 2020-07-03 17:00:53">2020-07-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></span></div><div class="content">目前在磁介质存储器与主机之间的信息传输、计算机之间的通信以及网络通信等采用串行传送方式的领域中，广泛采用循环冗余校验码(Cyclic Redundancy Check, CRC)**。循环冗余校验码是在 n 位有效信息位后拼接 k 位校验位构成的，它通过除法运算来建立有效信息和校验位之间的约定关系，是一种具有很强检错纠错能力**的校验码。
+一、基本原理
+在传送过程中，发送方可以把M(x) - R(x)**作为编好的校验码进行传送，接收方接收到编码后仍用原约定的多项式G(x)去除，如果能够整除，即余数为 0，则表示该校验码传送正确；如果不能够整除，即余数不为 0，则表示该校验码传送有误**。
+
+二、模2运算根据式（2-16）可知，M(x) - R(x)是减法操作，可能需要涉及借位运算，难以用简单的拼装方法实现编码。为了回避借位，CRC码采用了模2运算。
+所谓模2运算是指以按位模2加为基础的二进制四则运算。模2运算不考虑进位和借位。
+1. 加减运算加减运算本质上是异或运算，加不进位，减不退位。
+2. 乘法运算模2乘法就是在做乘法时按模2加的规则求部分积之和，计算时不进位。
+
+3. 除法运算 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="http://pic.frankfang.cn/tmp/blog-avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Frank Fang</div><div class="author-info__description">风起于青萍之末，浪成于微澜之间</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fzcoder"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fzcoder" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:frankfang001@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎访问本站！转载本站文章请注明出处！</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/202012372" title="Spring Boot整合JWT实现单点登录及身份认证"><img src="http://pic.frankfang.cn/img/c3f41391-1fae-4b9a-932a-382418e2264a.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Boot整合JWT实现单点登录及身份认证"/></a><div class="content"><a class="title" href="/article/202012372" title="Spring Boot整合JWT实现单点登录及身份认证">Spring Boot整合JWT实现单点登录及身份认证</a><time datetime="2020-12-11T08:57:35.000Z" title="发表于 2020-12-11 16:57:35">2020-12-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202012847" title="JWT简介与基本原理"><img src="http://pic.frankfang.cn/img/9fae5d01-bbee-4188-8270-0dfa322dd2a7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JWT简介与基本原理"/></a><div class="content"><a class="title" href="/article/202012847" title="JWT简介与基本原理">JWT简介与基本原理</a><time datetime="2020-12-11T08:48:01.000Z" title="发表于 2020-12-11 16:48:01">2020-12-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202012492" title="HTTP 报文"><img src="http://pic.frankfang.cn/img/be8ce826-e432-44ae-a9e6-b7dd32e56a0f.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP 报文"/></a><div class="content"><a class="title" href="/article/202012492" title="HTTP 报文">HTTP 报文</a><time datetime="2020-12-10T14:24:04.000Z" title="发表于 2020-12-10 22:24:04">2020-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202012717" title="HTTP 概述"><img src="http://pic.frankfang.cn/img/52f89d68-4080-4021-b58e-109269ede343.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP 概述"/></a><div class="content"><a class="title" href="/article/202012717" title="HTTP 概述">HTTP 概述</a><time datetime="2020-12-10T14:15:54.000Z" title="发表于 2020-12-10 22:15:54">2020-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202010564" title="Java的数据类型"><img src="http://pic.frankfang.cn/img/dcb1dcfc-f1df-4a16-851d-63e517e41baf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java的数据类型"/></a><div class="content"><a class="title" href="/article/202010564" title="Java的数据类型">Java的数据类型</a><time datetime="2020-10-19T13:31:59.000Z" title="发表于 2020-10-19 21:31:59">2020-10-19</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Git/"><span class="card-category-list-name">Git</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/HTTP/"><span class="card-category-list-name">HTTP</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Java/"><span class="card-category-list-name">Java</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Spring-Boot/"><span class="card-category-list-name">Spring Boot</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">会话技术</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B1%87%E7%BC%96/"><span class="card-category-list-name">汇编</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/"><span class="card-category-list-name">计算机组成原理</span><span class="card-category-list-count">5</span></a></li>
+            
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/CRC%E7%BC%96%E7%A0%81/" style="font-size: 1.1em; color: #999">CRC编码</a> <a href="/tags/Cache/" style="font-size: 1.1em; color: #999">Cache</a> <a href="/tags/Git/" style="font-size: 1.1em; color: #999">Git</a> <a href="/tags/HTTP/" style="font-size: 1.2em; color: #999da3">HTTP</a> <a href="/tags/JWT/" style="font-size: 1.2em; color: #999da3">JWT</a> <a href="/tags/Java-SE/" style="font-size: 1.1em; color: #999">Java SE</a> <a href="/tags/Spring-Boot/" style="font-size: 1.1em; color: #999">Spring Boot</a> <a href="/tags/spring-boot/" style="font-size: 1.1em; color: #999">spring boot</a> <a href="/tags/%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF/" style="font-size: 1.1em; color: #999">会话技术</a> <a href="/tags/%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C/" style="font-size: 1.1em; color: #999">奇偶校验</a> <a href="/tags/%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: #999">存储系统</a> <a href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" style="font-size: 1.1em; color: #999">开发工具</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%A0%A1%E9%AA%8C/" style="font-size: 1.4em; color: #99a5b6">数据校验</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 1.1em; color: #999">文件上传</a> <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 1.3em; color: #99a1ac">服务端开发</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 1.1em; color: #999">汇编</a> <a href="/tags/%E6%B5%B7%E6%98%8E%E7%BC%96%E7%A0%81/" style="font-size: 1.1em; color: #999">海明编码</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 1.2em; color: #999da3">编程语言</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 1.5em; color: #99a9bf">计算机组成原理</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 1.2em; color: #999da3">通信协议</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/12/"><span class="card-archive-list-date">十二月 2020</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/10/"><span class="card-archive-list-date">十月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/06/"><span class="card-archive-list-date">六月 2020</span><span class="card-archive-list-count">1</span></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">13</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-12-11T09:41:06.876Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Frank Fang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png" alt="ICP"/><span>皖ICP备20002829号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"></div></div></body></html>
