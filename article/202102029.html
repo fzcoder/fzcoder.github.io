@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spring中的事务控制 | Frank's Blog</title><meta name="keywords" content="服务端开发,Spring"><meta name="author" content="Frank Fang"><meta name="copyright" content="Frank Fang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="本文主要介绍Spring中事务控制的相关概念及如何通过XML文件和注解的方式配置事务控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring中的事务控制">
+<meta property="og:url" content="https://frankfang.cn/article/202102029">
+<meta property="og:site_name" content="Frank&#39;s Blog">
+<meta property="og:description" content="本文主要介绍Spring中事务控制的相关概念及如何通过XML文件和注解的方式配置事务控制">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.frankfang.cn/img/adea5eb4-bbe9-4ca9-a199-e6581b693915.png">
+<meta property="article:published_time" content="2021-02-04T16:26:00.000Z">
+<meta property="article:modified_time" content="2021-02-04T16:26:00.000Z">
+<meta property="article:author" content="Frank Fang">
+<meta property="article:tag" content="服务端开发">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.frankfang.cn/img/adea5eb4-bbe9-4ca9-a199-e6581b693915.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://frankfang.cn/article/202102029"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Frank Fang","link":"链接: ","source":"来源: Frank's Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-05 00:26:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Frank's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://cdn.frankfang.cn/tmp/blog-avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.frankfang.cn/img/adea5eb4-bbe9-4ca9-a199-e6581b693915.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Frank's Blog</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Spring中的事务控制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-02-04T16:26:00.000Z" title="发表于 2021-02-05 00:26:00">2021-02-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-02-04T16:26:00.000Z" title="更新于 2021-02-05 00:26:00">2021-02-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Spring/">Spring</a></span></div><div class="meta-secondline"> </div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>在之前的两篇文章<a href="https://frankfang.cn/article/202101083">《基于XML配置的方式实现Spring中的AOP》</a>和<a href="https://frankfang.cn/article/202101806">《基于注解的方式实现Spring中的AOP》</a>中我们分别通过XML配置和注解配置的方式实现了自定义的事务控制，其实Spring框架已经为我们提供了事务管理功能。本文将继续使用之前的案例来介绍Spring中的事务控制。</p>
+<h3 id="一、Spring事务控制的API"><a href="#一、Spring事务控制的API" class="headerlink" title="一、Spring事务控制的API"></a>一、Spring事务控制的API</h3><p>在介绍如何使用Spring为我们提供的事务控制之前，我们先来了解一下Spring事务控制的相关API</p>
+<h4 id="1、PlatformTransactionManager"><a href="#1、PlatformTransactionManager" class="headerlink" title="1、PlatformTransactionManager"></a>1、PlatformTransactionManager</h4><p><code>PlatformTransactionManager</code>接口提供事务操作的方法，包含有3个具体的操作，下面通过一张表格来说明：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TransactionStatus getTransaction(TransactionDefinition definition)</td>
+<td>获取事务状态信息</td>
+</tr>
+<tr>
+<td>void commit(TransactionStatus status)</td>
+<td>提交事务</td>
+</tr>
+<tr>
+<td>void rollback(TransactionStatus status)</td>
+<td>回滚事务</td>
+</tr>
+</tbody></table>
+<p>在实际开发中都是使用该接口的实现类，下面列出两个常用的实现类：</p>
+<ul>
+<li><code>org.springframework.jdbc.datasource.DataSourceTransactionManager</code>：当使用Spring JDBC 或 iBatis 进行持久化数据时使用</li>
+<li><code>org.springframework.orm.hibernate5.HibernateTransactionManager</code>：当使用hibernate 进行持久化数据时使用</li>
+</ul>
+<h4 id="2、TransactionDefinition"><a href="#2、TransactionDefinition" class="headerlink" title="2、TransactionDefinition"></a>2、TransactionDefinition</h4><p><code>TransactionDefinition</code>是事务的定义信息对象，其中有如下方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String getName()</td>
+<td>获取事务对象名称</td>
+</tr>
+<tr>
+<td>int getIsolationLevel()</td>
+<td>获取事务隔离级别</td>
+</tr>
+<tr>
+<td>int getPropagationBehavior()</td>
+<td>获取事务传播行为</td>
+</tr>
+<tr>
+<td>int getTimeout()</td>
+<td>获取事务超时时间</td>
+</tr>
+<tr>
+<td>boolean isReadOnly()</td>
+<td>获取事务是否只读</td>
+</tr>
+</tbody></table>
+<p>下面将对其中的一些细节进行介绍：</p>
+<h5 id="（1）事务的隔离级别"><a href="#（1）事务的隔离级别" class="headerlink" title="（1）事务的隔离级别"></a>（1）事务的隔离级别</h5><blockquote>
+<p>事务的隔离级别反映了事务提交并发访问时的处理态度</p>
+</blockquote>
+<p>事务的四种隔离级别分别为：未提交读（Read Uncommitted）、已提交读（Read Committed）、可重复读（Repeatable Read）和可串行化（Serializable），下面将通过一张表格来说明这四种隔离级别的区别：</p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读（Dirty Read）</th>
+<th>幻读（Phantom Read）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读</td>
+<td>可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>已提交读</td>
+<td>不可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td>不可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>可串行化</td>
+<td>不可能</td>
+<td>不可能</td>
+</tr>
+</tbody></table>
+<p>更多关于事务隔离级别的内容，请参阅：<a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/743691">《彻底搞懂 MySQL 事务的隔离级别》</a>和<a target="_blank" rel="noopener" href="https://developer.ibm.com/zh/technologies/databases/articles/os-mysql-transaction-isolation-levels-and-locks/">《MySQL 事务隔离级别和锁》</a>。</p>
+<p>在<code>TransactionDefinition</code>接口中提供了几种事务隔离级别，下面将通过表格进行说明：</p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ISOLATION_DEFAULT</code></td>
+<td>-1</td>
+<td>默认级别，和数据库保持一致</td>
+</tr>
+<tr>
+<td><code>ISOLATION_READ_UNCOMMITTED</code></td>
+<td>1</td>
+<td>未提交读</td>
+</tr>
+<tr>
+<td><code>ISOLATION_READ_COMMITTED</code></td>
+<td>2</td>
+<td>已提交读（Oracle默认级别）</td>
+</tr>
+<tr>
+<td><code>ISOLATION_REPEATABLE_READ</code></td>
+<td>4</td>
+<td>可重复读（MySQL默认级别）</td>
+</tr>
+<tr>
+<td><code>ISOLATION_SERIALIZABLE</code></td>
+<td>8</td>
+<td>可串行化</td>
+</tr>
+</tbody></table>
+<h5 id="（2）事务的传播行为"><a href="#（2）事务的传播行为" class="headerlink" title="（2）事务的传播行为"></a>（2）事务的传播行为</h5><blockquote>
+<p>事务传播行为用来描述由某一个事务传播行为修饰的方法被嵌套进另一个方法的时事务如何传播</p>
+</blockquote>
+<p>Spring 在<code>TransactionDefinition</code>接口中规定了7种类型的事务传播行为。事务传播行为是Spring框架独有的事务增强特性，他不属于的事务实际提供方数据库行为。下面将通过表格来对事务传播行为进行说明：</p>
+<table>
+<thead>
+<tr>
+<th>事务传播行为类型</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPAGATION_REQUIRED</code></td>
+<td>0</td>
+<td>如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中（默认值）</td>
+</tr>
+<tr>
+<td><code>PROPAGATION_SUPPORTS</code></td>
+<td>1</td>
+<td>支持当前事务，如果当前没有事务，就以非事务方式执行</td>
+</tr>
+<tr>
+<td><code>PROPAGATION_MANDATORY</code></td>
+<td>2</td>
+<td>使用当前的事务，如果当前没有事务，就抛出异常</td>
+</tr>
+<tr>
+<td><code>PROPAGATION_REQUIRES_NEW</code></td>
+<td>3</td>
+<td>新建事务，如果当前存在事务，把当前事务挂起</td>
+</tr>
+<tr>
+<td><code>PROPAGATION_NOT_SUPPORTED</code></td>
+<td>4</td>
+<td>以非事务方式执行操作，如果当前存在事务，就把当前事务挂起</td>
+</tr>
+<tr>
+<td><code>PROPAGATION_NEVER</code></td>
+<td>5</td>
+<td>以非事务方式执行，如果当前存在事务，则抛出异常</td>
+</tr>
+<tr>
+<td><code>PROPAGATION_NESTED</code></td>
+<td>6</td>
+<td>如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与<code>PROPAGATION_REQUIRED</code>类似的操作</td>
+</tr>
+</tbody></table>
+<h5 id="（3）超时时间"><a href="#（3）超时时间" class="headerlink" title="（3）超时时间"></a>（3）超时时间</h5><p>默认值为<code>-1</code>，即没有超时限制。如果有，则以秒为单位进行设置。</p>
+<h5 id="（4）是否为只读事务"><a href="#（4）是否为只读事务" class="headerlink" title="（4）是否为只读事务"></a>（4）是否为只读事务</h5><p>建议在查询时设置为只读。</p>
+<h4 id="3、TransactionStatus"><a href="#3、TransactionStatus" class="headerlink" title="3、TransactionStatus"></a>3、TransactionStatus</h4><p><code>TransactionStatus</code>接口描述了某个时间点上事务对象的状态信息，包含6个具体的操作，下面将通过表格来介绍这些操作：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void flush()</td>
+<td>刷新事务</td>
+</tr>
+<tr>
+<td>boolean hasSavePoint()</td>
+<td>是否存在存储点</td>
+</tr>
+<tr>
+<td>boolean isCompleted()</td>
+<td>事务是否已经完成</td>
+</tr>
+<tr>
+<td>boolean isNewTransaction()</td>
+<td>事务是否为新的事务</td>
+</tr>
+<tr>
+<td>boolean isRollbackOnly()</td>
+<td>事务是否回滚</td>
+</tr>
+<tr>
+<td>void setRollbackOnly()</td>
+<td>设置事务回滚</td>
+</tr>
+</tbody></table>
+<h3 id="二、基于XML声明式事务控制"><a href="#二、基于XML声明式事务控制" class="headerlink" title="二、基于XML声明式事务控制"></a>二、基于XML声明式事务控制</h3><p>下面我们将通过一个案例来介绍如何基于XML的方式来实现事务控制。在之前案例的不同之处在于，这次我们采用Spring JDBC来进行数据库相关操作。下面给出相关代码：</p>
+<p>（1）数据访问层的实现类<code>AccountDaoImpl</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.frankfang.dao.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.frankfang.dao.IAccountDao;</span><br><span class="line"><span class="keyword">import</span> cn.frankfang.pojo.Account;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.core.BeanPropertyRowMapper;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.core.JdbcTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.core.support.JdbcDaoSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 数据访问层实现类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountDaoImpl</span> <span class="keyword">extends</span> <span class="title">JdbcDaoSupport</span> <span class="keyword">implements</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AccountDaoImpl</span><span class="params">(JdbcTemplate jdbcTemplate)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.setJdbcTemplate(jdbcTemplate);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">saveAccount</span><span class="params">(Account account)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.getJdbcTemplate().update(<span class="string">&quot;insert into account(id,name,money)values(?,?,?)&quot;</span>,</span><br><span class="line">                    account.getId(),</span><br><span class="line">                    account.getName(),</span><br><span class="line">                    account.getMoney());</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">selectById</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            List&lt;Account&gt; accounts = <span class="keyword">super</span>.getJdbcTemplate().query(<span class="string">&quot;select * from account where id = ? &quot;</span>,</span><br><span class="line">                    <span class="keyword">new</span> BeanPropertyRowMapper&lt;&gt;(Account.class), id);</span><br><span class="line">            <span class="keyword">return</span> accounts.isEmpty() ? <span class="keyword">null</span> : accounts.get(<span class="number">0</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">getAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.getJdbcTemplate().query(<span class="string">&quot;select * from account&quot;</span>,</span><br><span class="line">                    <span class="keyword">new</span> BeanPropertyRowMapper&lt;&gt;(Account.class));</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">updateAccount</span><span class="params">(Account account)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.getJdbcTemplate().update(<span class="string">&quot;update account set name=?,money=? where id=?&quot;</span>,</span><br><span class="line">                    account.getName(),</span><br><span class="line">                    account.getMoney(),</span><br><span class="line">                    account.getId());</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteAccount</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.getJdbcTemplate().update(<span class="string">&quot;delete from account where id=?&quot;</span>, id);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）XML配置文件<code>spring-config.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置数据访问层 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;accountDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;cn.frankfang.dao.impl.AccountDaoImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;jdbcTemplate&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置业务层 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;accountService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;cn.frankfang.service.impl.AccountServiceImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;accountDao&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;accountDao&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--配置JdbcTemplate--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置数据源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?useAffectedRows=true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1、导入依赖"><a href="#1、导入依赖" class="headerlink" title="1、导入依赖"></a>1、导入依赖</h4><p>在项目的<code>pom.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- spring-context --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.2.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- spring tx --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-tx<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.2.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- spring jdbc --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.2.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- spring aop --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- c3p0 datasource --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mchange<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>c3p0<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.5.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mysql driver --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.0.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、添加约束"><a href="#2、添加约束" class="headerlink" title="2、添加约束"></a>2、添加约束</h4><p>在<code>spring-config.xml</code>文件中添加事务管理和AOP的约束：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:tx</span>=<span class="string">&quot;http://www.springframework.org/schema/tx&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/tx</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/tx/spring-tx.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/aop/spring-aop.xsd&quot;</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 配置内容省略 --&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3、配置事务管理器"><a href="#3、配置事务管理器" class="headerlink" title="3、配置事务管理器"></a>3、配置事务管理器</h4><p>在<code>spring-config.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置事务管理器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;transactionManager&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4、配置事务的通知"><a href="#4、配置事务的通知" class="headerlink" title="4、配置事务的通知"></a>4、配置事务的通知</h4><p>在<code>spring-config.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置事务的通知 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">tx:advice</span> <span class="attr">id</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">transaction-manager</span>=<span class="string">&quot;transactionManager&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置事务的属性 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tx:advice</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>id</code>作为通知的唯一标识，<code>transaction-manager</code>用于指定容器中事务管理器的<code>id</code>。</p>
+<h4 id="5、配置切入点表达式"><a href="#5、配置切入点表达式" class="headerlink" title="5、配置切入点表达式"></a>5、配置切入点表达式</h4><p>在<code>spring-config.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置切入点表达式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;pt1&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(public * cn.frankfang.service.impl.*.*(..))&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6、建立事务通知和切入点表达式的对应关系"><a href="#6、建立事务通知和切入点表达式的对应关系" class="headerlink" title="6、建立事务通知和切入点表达式的对应关系"></a>6、建立事务通知和切入点表达式的对应关系</h4><p>在<code>spring-config.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置切入点表达式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;pt1&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(public * cn.frankfang.service.impl.*.*(..))&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 建立切入点表达式和事务通知之间的关系 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:advisor</span> <span class="attr">advice-ref</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pt1&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>advice-ref</code>用于指定事务通知的<code>id</code>，<code>pointcut-ref</code>用于指定切入点表达式的<code>id</code>。</p>
+<h4 id="7、配置事务的属性"><a href="#7、配置事务的属性" class="headerlink" title="7、配置事务的属性"></a>7、配置事务的属性</h4><p>在<code>spring-config.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置事务的通知 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">tx:advice</span> <span class="attr">id</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">transaction-manager</span>=<span class="string">&quot;transactionManager&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置事务的属性 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tx:attributes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;transfer&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span> <span class="attr">read-only</span>=<span class="string">&quot;false&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tx:attributes</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tx:advice</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面将通过表格对<code>&lt;tx:method/&gt;</code>标签中的属性进行介绍：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>name</code></td>
+<td>用于指定需要进行事务管理的业务层方法名称，支持<code>*</code>通配符</td>
+</tr>
+<tr>
+<td><code>isolation</code></td>
+<td>用于指定事务的隔离级别，默认为<code>ISOLATION_DEFAULT</code></td>
+</tr>
+<tr>
+<td><code>propagation</code></td>
+<td>用于指定事务的传播行为，默认为<code>PROPAGATION_REQUIRED</code></td>
+</tr>
+<tr>
+<td><code>read-only</code></td>
+<td>用于指定事务是否只读，默认为<code>false</code>，只有查询方法才可设置为<code>true</code></td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>用于指定事务的超时时间，默认值为<code>-1</code></td>
+</tr>
+<tr>
+<td><code>rollback-for</code></td>
+<td>用于指定一个异常，当产生该异常时<strong>事务回滚</strong>，产生其它异常时事务不回滚，没有指定则表示<strong>所有异常都回滚</strong></td>
+</tr>
+<tr>
+<td><code>no-rollback-for</code></td>
+<td>用于指定一个异常，当产生该异常时<strong>事务不回滚</strong>，产生其它异常时事务不回滚，没有指定则表示<strong>所有异常都回滚</strong></td>
+</tr>
+</tbody></table>
+<p>在配置完事务的属性之后就可以进行测试，检测是否达到了预计的效果。</p>
+<h3 id="三、基于注解的事务控制"><a href="#三、基于注解的事务控制" class="headerlink" title="三、基于注解的事务控制"></a>三、基于注解的事务控制</h3><p>除了可以使用XML声明式的方式进行事务控制，还可以通过注解的方法实现事务控制，下面将接着上面的例子来介绍如何基于注解实现事务控制。</p>
+<h4 id="1、配置事务管理器"><a href="#1、配置事务管理器" class="headerlink" title="1、配置事务管理器"></a>1、配置事务管理器</h4><p>如果采用XML+注解混合模式的话，与上文通过XML声明式的方式相同，这里不再赘述；如果使用纯注解方式，需要在配置类中添加以下内容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 用于创建事务管理器对象</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> dataSource 数据源</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> 事务管理器</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="meta">@Bean(&quot;transactionManager&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PlatformTransactionManager <span class="title">transactionManager</span><span class="params">(<span class="meta">@Qualifier(&quot;dataSource&quot;)</span> DataSource dataSource)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、开启Spring对注解事务的支持"><a href="#2、开启Spring对注解事务的支持" class="headerlink" title="2、开启Spring对注解事务的支持"></a>2、开启Spring对注解事务的支持</h4><p>如果采用XML+注解混合模式的话，需要在<code>spring-config.xml</code>文件中添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 开启Spring对注解事务的支持 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">tx:annotation-driven</span> <span class="attr">transaction-manager</span>=<span class="string">&quot;transactionManager&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用纯注解方式，只需在配置类上加上<code>@EnableTransactionManagement</code>注解即可</p>
+<h4 id="3、使用-Transactional注解"><a href="#3、使用-Transactional注解" class="headerlink" title="3、使用@Transactional注解"></a>3、使用@Transactional注解</h4><p>在需要进行事务控制的类或方法上添加<code>@Transactional</code>注解即可实现事务控制：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(propagation = Propagation.REQUIRED, readOnly = false)</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">transfer</span><span class="params">(Integer sourceAccountId, Integer targetAccountId, Double money)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 1.根据id查询两个账户信息</span></span><br><span class="line">    Account sourceAccount = accountDao.selectById(sourceAccountId);</span><br><span class="line">    Account targetAccount = accountDao.selectById(targetAccountId);</span><br><span class="line">    <span class="comment">// 2.判断要转出的账户余额是否充足</span></span><br><span class="line">    <span class="keyword">if</span> (sourceAccount.getMoney() &lt; money) &#123;</span><br><span class="line">        <span class="comment">// 余额不足，转账失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 余额足够，继续转账</span></span><br><span class="line">    sourceAccount.setMoney(sourceAccount.getMoney() - money);</span><br><span class="line">    targetAccount.setMoney(targetAccount.getMoney() + money);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3.将修改的信息写入数据库</span></span><br><span class="line">    <span class="keyword">if</span> (accountDao.updateAccount(sourceAccount) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 模拟转账异常</span></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">1</span> / <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4.将修改的信息写入数据库</span></span><br><span class="line">    <span class="keyword">if</span> (accountDao.updateAccount(targetAccount) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@Transactional</code>注解的属性与<code>&lt;tx:method/&gt;</code>标签中的属性基本相同，这里不再进行赘述。</p>
+<p>在添加完相关注解之后就可以进行测试，检测是否达到了预计的效果。</p>
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>Spring框架为我们提供了事务控制的功能，可通过XML文件或注解来配置Spring中的事务控制，在实际开发中可根据需要来选择配置的方式，若需获取更多关于Spring事务控制的相关内容，请参阅：<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction">Transaction Management</a>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Frank Fang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://frankfang.cn/article/202102029">https://frankfang.cn/article/202102029</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://frankfang.cn" target="_blank">Frank's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%BC%80%E5%8F%91/">服务端开发</a><a class="post-meta__tags" href="/tags/Spring/">Spring</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.frankfang.cn/img/adea5eb4-bbe9-4ca9-a199-e6581b693915.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/article/202101806"><img class="next-cover" src="https://cdn.frankfang.cn/img/93d9f9c4-0a47-4270-b624-f5d3eaadd6bd.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于注解的方式实现Spring中的AOP</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/202101599.html" title="IoC概述及Spring中的IoC"><img class="cover" src="https://cdn.frankfang.cn/img/898e79e4-1885-4999-b4be-c625b11a5364.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-20</div><div class="title">IoC概述及Spring中的IoC</div></div></a></div><div><a href="/article/202101782.html" title="Spring框架简介"><img class="cover" src="https://cdn.frankfang.cn/img/cd076bd1-87a0-4c95-8819-4e0a027e1712.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-20</div><div class="title">Spring框架简介</div></div></a></div><div><a href="/article/202101806.html" title="基于注解的方式实现Spring中的AOP"><img class="cover" src="https://cdn.frankfang.cn/img/93d9f9c4-0a47-4270-b624-f5d3eaadd6bd.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-25</div><div class="title">基于注解的方式实现Spring中的AOP</div></div></a></div><div><a href="/article/202101034.html" title="基于XML配置的方式使用Spring的IoC"><img class="cover" src="https://cdn.frankfang.cn/img/a58382f6-5690-42f1-bd4d-9f35203a71ed.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-21</div><div class="title">基于XML配置的方式使用Spring的IoC</div></div></a></div><div><a href="/article/202101064.html" title="基于注解的方式使用Spring的IoC"><img class="cover" src="https://cdn.frankfang.cn/img/eeb9189c-d3f9-4d05-9674-e6aaae17e7da.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-22</div><div class="title">基于注解的方式使用Spring的IoC</div></div></a></div><div><a href="/article/202101083.html" title="基于XML配置的方式实现Spring中的AOP"><img class="cover" src="https://cdn.frankfang.cn/img/553ab702-679f-4f07-a9dc-43aec88af61d.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-24</div><div class="title">基于XML配置的方式实现Spring中的AOP</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://cdn.frankfang.cn/tmp/blog-avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Frank Fang</div><div class="author-info__description">风起于青萍之末，浪成于微澜之间</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fzcoder"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fzcoder" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:frankfang001@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎访问本站！转载本站文章请注明出处！</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81Spring%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E7%9A%84API"><span class="toc-text">一、Spring事务控制的API</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81PlatformTransactionManager"><span class="toc-text">1、PlatformTransactionManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81TransactionDefinition"><span class="toc-text">2、TransactionDefinition</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">（1）事务的隔离级别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BC%A0%E6%92%AD%E8%A1%8C%E4%B8%BA"><span class="toc-text">（2）事务的传播行为</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4"><span class="toc-text">（3）超时时间</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E6%98%AF%E5%90%A6%E4%B8%BA%E5%8F%AA%E8%AF%BB%E4%BA%8B%E5%8A%A1"><span class="toc-text">（4）是否为只读事务</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81TransactionStatus"><span class="toc-text">3、TransactionStatus</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E4%BA%8EXML%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6"><span class="toc-text">二、基于XML声明式事务控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-text">1、导入依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%B7%BB%E5%8A%A0%E7%BA%A6%E6%9D%9F"><span class="toc-text">2、添加约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E9%85%8D%E7%BD%AE%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-text">3、配置事务管理器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81%E9%85%8D%E7%BD%AE%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%80%9A%E7%9F%A5"><span class="toc-text">4、配置事务的通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%E3%80%81%E9%85%8D%E7%BD%AE%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">5、配置切入点表达式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6%E3%80%81%E5%BB%BA%E7%AB%8B%E4%BA%8B%E5%8A%A1%E9%80%9A%E7%9F%A5%E5%92%8C%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="toc-text">6、建立事务通知和切入点表达式的对应关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7%E3%80%81%E9%85%8D%E7%BD%AE%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-text">7、配置事务的属性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6"><span class="toc-text">三、基于注解的事务控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E9%85%8D%E7%BD%AE%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-text">1、配置事务管理器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E5%BC%80%E5%90%AFSpring%E5%AF%B9%E6%B3%A8%E8%A7%A3%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%94%AF%E6%8C%81"><span class="toc-text">2、开启Spring对注解事务的支持</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8-Transactional%E6%B3%A8%E8%A7%A3"><span class="toc-text">3、使用@Transactional注解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">四、总结</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/202102029" title="Spring中的事务控制"><img src="https://cdn.frankfang.cn/img/adea5eb4-bbe9-4ca9-a199-e6581b693915.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring中的事务控制"/></a><div class="content"><a class="title" href="/article/202102029" title="Spring中的事务控制">Spring中的事务控制</a><time datetime="2021-02-04T16:26:00.000Z" title="发表于 2021-02-05 00:26:00">2021-02-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202101806" title="基于注解的方式实现Spring中的AOP"><img src="https://cdn.frankfang.cn/img/93d9f9c4-0a47-4270-b624-f5d3eaadd6bd.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于注解的方式实现Spring中的AOP"/></a><div class="content"><a class="title" href="/article/202101806" title="基于注解的方式实现Spring中的AOP">基于注解的方式实现Spring中的AOP</a><time datetime="2021-01-25T07:27:16.000Z" title="发表于 2021-01-25 15:27:16">2021-01-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202101083" title="基于XML配置的方式实现Spring中的AOP"><img src="https://cdn.frankfang.cn/img/553ab702-679f-4f07-a9dc-43aec88af61d.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于XML配置的方式实现Spring中的AOP"/></a><div class="content"><a class="title" href="/article/202101083" title="基于XML配置的方式实现Spring中的AOP">基于XML配置的方式实现Spring中的AOP</a><time datetime="2021-01-24T14:03:40.000Z" title="发表于 2021-01-24 22:03:40">2021-01-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202101204" title="AOP概述及Spring中的AOP"><img src="https://cdn.frankfang.cn/img/c1bebb82-3136-4bd3-96ac-e75a0dc75dca.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AOP概述及Spring中的AOP"/></a><div class="content"><a class="title" href="/article/202101204" title="AOP概述及Spring中的AOP">AOP概述及Spring中的AOP</a><time datetime="2021-01-23T12:28:23.000Z" title="发表于 2021-01-23 20:28:23">2021-01-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202101064" title="基于注解的方式使用Spring的IoC"><img src="https://cdn.frankfang.cn/img/eeb9189c-d3f9-4d05-9674-e6aaae17e7da.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于注解的方式使用Spring的IoC"/></a><div class="content"><a class="title" href="/article/202101064" title="基于注解的方式使用Spring的IoC">基于注解的方式使用Spring的IoC</a><time datetime="2021-01-22T10:01:50.000Z" title="发表于 2021-01-22 18:01:50">2021-01-22</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Frank Fang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png" alt="ICP"/><span>皖ICP备20002829号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"></div></div></body></html>
