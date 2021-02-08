@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Go语言简介及快速入门 | Frank's Blog</title><meta name="keywords" content="编程语言,Golang"><meta name="author" content="Frank Fang"><meta name="copyright" content="Frank Fang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="本文主要对Go语言进行简单介绍及快速入门">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言简介及快速入门">
+<meta property="og:url" content="https://frankfang.cn/article/202102141">
+<meta property="og:site_name" content="Frank&#39;s Blog">
+<meta property="og:description" content="本文主要对Go语言进行简单介绍及快速入门">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.frankfang.cn/img/4e84cca1-0f48-4ad8-b800-baea2ca22e37.jpg">
+<meta property="article:published_time" content="2021-02-08T16:52:59.000Z">
+<meta property="article:modified_time" content="2021-02-08T17:03:44.000Z">
+<meta property="article:author" content="Frank Fang">
+<meta property="article:tag" content="编程语言">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.frankfang.cn/img/4e84cca1-0f48-4ad8-b800-baea2ca22e37.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://frankfang.cn/article/202102141"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Frank Fang","link":"链接: ","source":"来源: Frank's Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-09 01:03:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Frank's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://cdn.frankfang.cn/tmp/blog-avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.frankfang.cn/img/4e84cca1-0f48-4ad8-b800-baea2ca22e37.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Frank's Blog</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Go语言简介及快速入门</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-02-08T16:52:59.000Z" title="发表于 2021-02-09 00:52:59">2021-02-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-02-08T17:03:44.000Z" title="更新于 2021-02-09 01:03:44">2021-02-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Golang/">Golang</a></span></div><div class="meta-secondline"> </div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="一、Go语言简介"><a href="#一、Go语言简介" class="headerlink" title="一、Go语言简介"></a>一、Go语言简介</h3><h4 id="1、什么是Go语言"><a href="#1、什么是Go语言" class="headerlink" title="1、什么是Go语言"></a>1、什么是Go语言</h4><p><strong>Go</strong>（又称<strong>Golang</strong>）是 Google 开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。Go语言既能达到静态编译语言的安全和性能水平，又达到了动态语言开发维护的高效率。</p>
+<p>罗伯特·格瑞史莫（Robert Griesemer），罗勃·派克（Rob Pike）及肯·汤普逊（Ken Thompson）于2007年9月开始设计Go，稍后Ian Lance Taylor、Russ Cox加入项目。Go于2009年11月正式宣布推出，成为开放源代码项目，并在 Linux 及 Mac OS X 平台上进行了实现，后来追加了 Windows 系统下的实现。在2016年，Go 被软件评价公司 TIOBE 选为“TIOBE 2016 年最佳语言”。 目前，Go每半年发布一个二级版本（即从a.x升级到a.y）。</p>
+<h4 id="2、Go语言的特点"><a href="#2、Go语言的特点" class="headerlink" title="2、Go语言的特点"></a>2、Go语言的特点</h4><ul>
+<li>Go语言从C语言中继承了很多理念，Go语言保留了指针，但可以自动地进行垃圾回收，而无需像C和C++需要手动进行垃圾回收</li>
+<li>Go语言引入了包的概念，用于组织程序结构，Go语言的每个文件都要归属一个包，而不能单独存在</li>
+<li>Go语言有垃圾回收机制，内存自动回收，不需要开发人员进行管理</li>
+<li><strong>Go语言天然支持并发</strong>，这是Go语言非常重要的一个特性。Go从语言层面支持并发，Go语言中的goroutine可实现大并发处理，高效利用多核</li>
+<li>吸收了管道通信机制，形成Go语言特有的管道（channel），通过管道可以实现不同的goroute之间的相互通信</li>
+<li>函数可以返回多个值</li>
+<li>Go语言中还包含了切片（slice）、延时执行（defer）等新的创新</li>
+</ul>
+<h4 id="3、Go语言的应用"><a href="#3、Go语言的应用" class="headerlink" title="3、Go语言的应用"></a>3、Go语言的应用</h4><p>目前，Go语言主要用于区块链、服务端开发、分布式和云计算等领域。</p>
+<h3 id="二、开发环境配置"><a href="#二、开发环境配置" class="headerlink" title="二、开发环境配置"></a>二、开发环境配置</h3><h4 id="1、下载SDK"><a href="#1、下载SDK" class="headerlink" title="1、下载SDK"></a>1、下载SDK</h4><p>Go支持Linux、FreeBSD、Mac OS X 和 Windows，请下载对应操作系统的SDK。下面给出一些下载地址：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>下载地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Go语言官网</td>
+<td><a target="_blank" rel="noopener" href="https://golang.org/dl/">https://golang.org/dl/</a></td>
+</tr>
+<tr>
+<td>Google中国</td>
+<td><a target="_blank" rel="noopener" href="https://golang.google.cn/dl/">https://golang.google.cn/dl/</a></td>
+</tr>
+<tr>
+<td>Go语言中文网</td>
+<td><a target="_blank" rel="noopener" href="https://studygolang.com/dl">https://studygolang.com/dl</a></td>
+</tr>
+</tbody></table>
+<h4 id="2、配置环境变量"><a href="#2、配置环境变量" class="headerlink" title="2、配置环境变量"></a>2、配置环境变量</h4><p>（1）对于 Unix / Linux / Mac OS X / FreeBSD 用户，打开终端，获取<strong>root权限</strong>之后将Go安装路径，<code>bin</code>文件路径以及工作目录路径添加到环境变量中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOROOT=/usr/local/go</span><br><span class="line">export PATH=$PATH:$GOROOT/bin</span><br><span class="line">export GOPATH=$HOME/project/go</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>环境变量值请根据实际需要进行填写，以上仅供参考</li>
+<li>添加完环境变量之后在终端输入<code>go version</code>查看Go语言的版本，顺便检查环境变量是否配置正确</li>
+</ul>
+<p>（2）对于 Windows 用户，Go 语言需要配置以下三个环境变量：</p>
+<table>
+<thead>
+<tr>
+<th>环境变量</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GOROOT</td>
+<td>合法的Windows目录路径</td>
+<td>指定SDK的安装路径</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>%GOROOT%\bin</code></td>
+<td>添加SDK的<code>bin</code>目录</td>
+</tr>
+<tr>
+<td>GOPATH</td>
+<td>合法的Windows目录路径</td>
+<td>工作目录</td>
+</tr>
+</tbody></table>
+<ul>
+<li>配置完成之后以<strong>管理员身份</strong>运行控制台，输入<code>go version</code>来查看Go语言的版本，顺便检查环境变量是否配置正确</li>
+</ul>
+<h3 id="三、开发流程"><a href="#三、开发流程" class="headerlink" title="三、开发流程"></a>三、开发流程</h3><p>下面将通过编写一个Hello World程序来来讲Go语言程序开发的流程。</p>
+<h4 id="1、开发"><a href="#1、开发" class="headerlink" title="1、开发"></a>1、开发</h4><p>在Go语言的工作目录下新建一个<code>hello.go</code>文件，在文件中添加以下内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;hello world!&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、编译"><a href="#2、编译" class="headerlink" title="2、编译"></a>2、编译</h4><p>打开终端或控制台，在源代码所在目录下输入以下内容：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build hello.go</span><br></pre></td></tr></table></figure>
+
+<p>之后会在当前目录生成可执行文件<code>hello</code>（Linux / Mac OS X）或<code>hello.exe</code>（Windows操作系统）。</p>
+<h4 id="3、运行"><a href="#3、运行" class="headerlink" title="3、运行"></a>3、运行</h4><p>Linux / Mac OS 用户打开终端，在可执行文件所在路径下输入<code>hello</code>便可运行程序，Windows 用户打开控制台或PowerShell，在可执行文件所在路径下输入<code>hello.exe</code>（控制台）或<code>.\hello.exe</code>（PowerShell）便可运行程序。</p>
+<p>有很多的编辑器和IDE可以进行Go语言程序的开发，推荐使用 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Visual Studio Code</a> 或 <a target="_blank" rel="noopener" href="https://www.jetbrains.com/go/">GoLand</a> 进行开发，下面将通过一张图片说明使用 Visual Studio Code 并在 Windows 系统上进行 Go 语言程序开发的完整流程：</p>
+<p><img src="https://cdn.frankfang.cn/img/1b01b9ed-7ac3-4496-9fe2-c3e6b863d9c7.png" alt="编译-运行"></p>
+<p>Go语言除了可以通过静态编译生成可执行文件来运行之外，还可以通过<code>go run</code>指令直接运行（本质上还是需要进行编译），例如上面的例子就可以直接在控制台输入<code>go run hello.go</code>来运行：</p>
+<p><img src="https://cdn.frankfang.cn/img/c7ef5547-8734-4084-9315-984308cebda4.png" alt="直接运行"></p>
+<h3 id="四、注意事项"><a href="#四、注意事项" class="headerlink" title="四、注意事项"></a>四、注意事项</h3><h4 id="1、源文件以”-go”为拓展名"><a href="#1、源文件以”-go”为拓展名" class="headerlink" title="1、源文件以”.go”为拓展名"></a>1、源文件以”.go”为拓展名</h4><p>Go语言的源程序统一以<code>.go</code>结尾，如果文件名不以<code>.go</code>结尾将无法通过编译。</p>
+<h4 id="2、程序入口是main-函数"><a href="#2、程序入口是main-函数" class="headerlink" title="2、程序入口是main()函数"></a>2、程序入口是main()函数</h4><p>Go语言以<code>main()</code>函数作为整个程序的入口。</p>
+<h4 id="3、严格区分大小写"><a href="#3、严格区分大小写" class="headerlink" title="3、严格区分大小写"></a>3、严格区分大小写</h4><p>Go语言严格区分大小写，<code>Hello</code>和<code>hello</code>在Go语言中是不相同的。</p>
+<h4 id="4、每条语句后不需要分号"><a href="#4、每条语句后不需要分号" class="headerlink" title="4、每条语句后不需要分号"></a>4、每条语句后不需要分号</h4><p>Go语言中每条语句的结尾不需要添加分号，因为Go语言在编译时会自动添加分号，这体现出Go语言的简洁性。</p>
+<h4 id="5、不能把多条语句写在一行"><a href="#5、不能把多条语句写在一行" class="headerlink" title="5、不能把多条语句写在一行"></a>5、不能把多条语句写在一行</h4><p>Go语言是按行进行编译的，因此如果在一行中写入多条语句将无法通过编译：</p>
+<p><img src="https://cdn.frankfang.cn/img/bf0ce389-f66f-49f5-a13c-81b202a4d951.png" alt="不能把多条语句写在一行"></p>
+<h4 id="6、定义的变量或导入的包一定要使用"><a href="#6、定义的变量或导入的包一定要使用" class="headerlink" title="6、定义的变量或导入的包一定要使用"></a>6、定义的变量或导入的包一定要使用</h4><p>在Go语言中，定义的变量或者导入的包一定要使用，否则将无法通过编译：</p>
+<p><img src="https://cdn.frankfang.cn/img/1dd3da79-5001-4bcb-9aae-7a944a2b272c.png" alt="定义的变量或导入的包一定要使用"></p>
+<h3 id="五、代码风格"><a href="#五、代码风格" class="headerlink" title="五、代码风格"></a>五、代码风格</h3><h4 id="1、注释"><a href="#1、注释" class="headerlink" title="1、注释"></a>1、注释</h4><p>Go语言有两种注释方法，分别是行注释<code>//</code>和块注释<code>/**/</code>，Go官方推荐使用行注释。此外需要注意的是在Go语言中块注释不可以进行嵌套，否则会报错。</p>
+<h4 id="2、缩进和空白"><a href="#2、缩进和空白" class="headerlink" title="2、缩进和空白"></a>2、缩进和空白</h4><ul>
+<li><p>使用<code>gofmt</code>进行格式化。Go语言提供了格式化工具，可在终端或控制台输入<code>gofmt</code>对源代码进行格式化</p>
+</li>
+<li><p>运算符两侧留空白，尽量养成一个良好的编程习惯</p>
+</li>
+</ul>
+<h4 id="3、代码块"><a href="#3、代码块" class="headerlink" title="3、代码块"></a>3、代码块</h4><p>正确的写法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// code</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>错误的写法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// code</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果采用了错误的写法，就会出现以下结果：</p>
+<p><img src="https://cdn.frankfang.cn/img/77776c13-d6ee-4f04-ad39-bce63faf6b83.png" alt="代码块格式错误"></p>
+<p>可以看到，当采用错误的格式时，编译将无法通过，因为Go语言的设计者提倡一个问题尽量只有一个解决方法。</p>
+<h4 id="4、输出字符数量"><a href="#4、输出字符数量" class="headerlink" title="4、输出字符数量"></a>4、输出字符数量</h4><p>输出的字符一行最好不超过80个字符，超过的请使用换行符，尽量保持格式的优雅。</p>
+<h3 id="六、相关资料"><a href="#六、相关资料" class="headerlink" title="六、相关资料"></a>六、相关资料</h3><h4 id="1、Go指南"><a href="#1、Go指南" class="headerlink" title="1、Go指南"></a>1、Go指南</h4><p>官方网站：<a target="_blank" rel="noopener" href="https://golang.org/">https://golang.org</a> 或 <a target="_blank" rel="noopener" href="https://golang.google.cn/">https://golang.google.cn/。</a></p>
+<p>Go语言中文网：<a target="_blank" rel="noopener" href="https://studygolang.com/">https://studygolang.com</a>。</p>
+<h4 id="2、标准库API"><a href="#2、标准库API" class="headerlink" title="2、标准库API"></a>2、标准库API</h4><p>官方API文档：<a target="_blank" rel="noopener" href="https://golang.org/pkg/">https://golang.org/pkg/</a> 或 <a target="_blank" rel="noopener" href="https://golang.google.cn/pkg/">https://golang.google.cn/pkg/</a>。</p>
+<p>中文文档：<a target="_blank" rel="noopener" href="https://studygolang.com/pkgdoc">https://studygolang.com/pkgdoc</a>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Frank Fang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://frankfang.cn/article/202102141">https://frankfang.cn/article/202102141</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://frankfang.cn" target="_blank">Frank's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a><a class="post-meta__tags" href="/tags/Golang/">Golang</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.frankfang.cn/img/4e84cca1-0f48-4ad8-b800-baea2ca22e37.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/article/202102969"><img class="next-cover" src="https://cdn.frankfang.cn/img/53615091-705e-481e-871c-6fa925becd3d.jpeg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Spark简介及快速入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/202006005.html" title="用汇编语言输出“Hello World!"><img class="cover" src="https://cdn.frankfang.cn/img/0150bbb4-c58a-4f86-a57f-6dcf522945a9.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-06-14</div><div class="title">用汇编语言输出“Hello World!</div></div></a></div><div><a href="/article/202010564.html" title="Java的数据类型"><img class="cover" src="https://cdn.frankfang.cn/img/dcb1dcfc-f1df-4a16-851d-63e517e41baf.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-19</div><div class="title">Java的数据类型</div></div></a></div><div><a href="/article/202101335.html" title="反射机制概述及基本用法"><img class="cover" src="https://cdn.frankfang.cn/img/a4699407-7f9e-4219-93cf-6c01edbe7b6e.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-14</div><div class="title">反射机制概述及基本用法</div></div></a></div><div><a href="/article/202101560.html" title="注解功能概述及基本用法"><img class="cover" src="https://cdn.frankfang.cn/img/f65f3a67-0053-4de9-98e7-e4319d027bb9.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-15</div><div class="title">注解功能概述及基本用法</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://cdn.frankfang.cn/tmp/blog-avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Frank Fang</div><div class="author-info__description">风起于青萍之末，浪成于微澜之间</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fzcoder"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fzcoder" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:frankfang001@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎访问本站！转载本站文章请注明出处！</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81Go%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B"><span class="toc-text">一、Go语言简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFGo%E8%AF%AD%E8%A8%80"><span class="toc-text">1、什么是Go语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81Go%E8%AF%AD%E8%A8%80%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-text">2、Go语言的特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81Go%E8%AF%AD%E8%A8%80%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">3、Go语言的应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-text">二、开发环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E4%B8%8B%E8%BD%BDSDK"><span class="toc-text">1、下载SDK</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">2、配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-text">三、开发流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E5%BC%80%E5%8F%91"><span class="toc-text">1、开发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E7%BC%96%E8%AF%91"><span class="toc-text">2、编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E8%BF%90%E8%A1%8C"><span class="toc-text">3、运行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">四、注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E6%BA%90%E6%96%87%E4%BB%B6%E4%BB%A5%E2%80%9D-go%E2%80%9D%E4%B8%BA%E6%8B%93%E5%B1%95%E5%90%8D"><span class="toc-text">1、源文件以”.go”为拓展名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3%E6%98%AFmain-%E5%87%BD%E6%95%B0"><span class="toc-text">2、程序入口是main()函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E4%B8%A5%E6%A0%BC%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99"><span class="toc-text">3、严格区分大小写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81%E6%AF%8F%E6%9D%A1%E8%AF%AD%E5%8F%A5%E5%90%8E%E4%B8%8D%E9%9C%80%E8%A6%81%E5%88%86%E5%8F%B7"><span class="toc-text">4、每条语句后不需要分号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%E3%80%81%E4%B8%8D%E8%83%BD%E6%8A%8A%E5%A4%9A%E6%9D%A1%E8%AF%AD%E5%8F%A5%E5%86%99%E5%9C%A8%E4%B8%80%E8%A1%8C"><span class="toc-text">5、不能把多条语句写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6%E3%80%81%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8F%98%E9%87%8F%E6%88%96%E5%AF%BC%E5%85%A5%E7%9A%84%E5%8C%85%E4%B8%80%E5%AE%9A%E8%A6%81%E4%BD%BF%E7%94%A8"><span class="toc-text">6、定义的变量或导入的包一定要使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="toc-text">五、代码风格</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E6%B3%A8%E9%87%8A"><span class="toc-text">1、注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E7%BC%A9%E8%BF%9B%E5%92%8C%E7%A9%BA%E7%99%BD"><span class="toc-text">2、缩进和空白</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">3、代码块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81%E8%BE%93%E5%87%BA%E5%AD%97%E7%AC%A6%E6%95%B0%E9%87%8F"><span class="toc-text">4、输出字符数量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99"><span class="toc-text">六、相关资料</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81Go%E6%8C%87%E5%8D%97"><span class="toc-text">1、Go指南</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%A0%87%E5%87%86%E5%BA%93API"><span class="toc-text">2、标准库API</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/202102141" title="Go语言简介及快速入门"><img src="https://cdn.frankfang.cn/img/4e84cca1-0f48-4ad8-b800-baea2ca22e37.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言简介及快速入门"/></a><div class="content"><a class="title" href="/article/202102141" title="Go语言简介及快速入门">Go语言简介及快速入门</a><time datetime="2021-02-08T16:52:59.000Z" title="发表于 2021-02-09 00:52:59">2021-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202102969" title="Spark简介及快速入门"><img src="https://cdn.frankfang.cn/img/53615091-705e-481e-871c-6fa925becd3d.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spark简介及快速入门"/></a><div class="content"><a class="title" href="/article/202102969" title="Spark简介及快速入门">Spark简介及快速入门</a><time datetime="2021-02-07T14:22:52.000Z" title="发表于 2021-02-07 22:22:52">2021-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202102029" title="Spring中的事务控制"><img src="https://cdn.frankfang.cn/img/adea5eb4-bbe9-4ca9-a199-e6581b693915.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring中的事务控制"/></a><div class="content"><a class="title" href="/article/202102029" title="Spring中的事务控制">Spring中的事务控制</a><time datetime="2021-02-04T16:26:00.000Z" title="发表于 2021-02-05 00:26:00">2021-02-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202101806" title="基于注解的方式实现Spring中的AOP"><img src="https://cdn.frankfang.cn/img/93d9f9c4-0a47-4270-b624-f5d3eaadd6bd.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于注解的方式实现Spring中的AOP"/></a><div class="content"><a class="title" href="/article/202101806" title="基于注解的方式实现Spring中的AOP">基于注解的方式实现Spring中的AOP</a><time datetime="2021-01-25T07:27:16.000Z" title="发表于 2021-01-25 15:27:16">2021-01-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/202101083" title="基于XML配置的方式实现Spring中的AOP"><img src="https://cdn.frankfang.cn/img/553ab702-679f-4f07-a9dc-43aec88af61d.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于XML配置的方式实现Spring中的AOP"/></a><div class="content"><a class="title" href="/article/202101083" title="基于XML配置的方式实现Spring中的AOP">基于XML配置的方式实现Spring中的AOP</a><time datetime="2021-01-24T14:03:40.000Z" title="发表于 2021-01-24 22:03:40">2021-01-24</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Frank Fang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png" alt="ICP"/><span>皖ICP备20002829号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"></div></div></body></html>
