@@ -2,15 +2,15 @@
 
 ## Server
 
-- project: [https://github.com/blog-server](https://github.com/blog-server)
-- docs: [blog-server](https://opensource.fzcoder.com/blog-server/)
+- project: [https://github.com/fzcoder/blog-server](https://github.com/fzcoder/blog-server)
+- docs: [blog-server](/blog-server/)
 
 ## Admin
 
-- project: [https://github.com/blog-admin](https://github.com/blog-admin)
-- docs: [blog-admin](https://opensource.fzcoder.com/blog-admin/)
+- project: [https://github.com/fzcoder/blog-admin](https://github.com/fzcoder/blog-admin)
+- docs: [blog-admin](/blog-admin/)
 
 ## Web
 
-- project: [https://github.com/blog-web](https://github.com/blog-web)
-- docs: [blog-web](https://opensource.fzcoder.com/blog-web/)
+- project: [https://github.com/fzcoder/blog-web](https://github.com/fzcoder/blog-web)
+- docs: [blog-web](/blog-web/)
