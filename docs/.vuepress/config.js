@@ -4,14 +4,14 @@ module.exports = {
         // en-US
         '/': {
             lang: 'en-US',
-            title: 'FZ\'s Docs',
-            description: 'This is a opensource project document website for fzcoder'
+            title: 'Fz\'s Docs',
+            description: 'The opensource project document website for @fzcoder'
         },
         // zh-CN
         '/zh/': {
             lang: 'zh-CN',
-            title: 'FZ\'s Docs',
-            description: '这是fzcoder的开源项目文档网站'
+            title: 'Fz\'s Docs',
+            description: '@fzcoder 的开源项目文档网站'
         }
     },
     // default theme
