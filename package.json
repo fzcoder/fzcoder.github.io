@@ -1,7 +1,7 @@
 {
-  "name": "opensource-fzcoder-com",
+  "name": "docs-fzcoder-com",
   "version": "1.0.0",
-  "description": "The website for opensource.fzcoder.com",
+  "description": "The website for docs.fzcoder.com",
   "main": "index.js",
   "directories": {
     "doc": "docs"

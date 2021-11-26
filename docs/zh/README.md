@@ -1,4 +1,4 @@
 ---
 home: true
-footer: © 2020-present opensource.fzcoder.com
+footer: Copyright © 2020-present docs.fzcoder.com
 ---
